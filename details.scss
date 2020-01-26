@@ -1,0 +1,48 @@
+page-details {
+    .blink_me {
+        animation: blinker 1.5s linear infinite;
+        color:#E26D26;
+        font-size:17px;
+    }
+
+    modal {
+        row {
+            width:100%
+        }
+        col-6 {
+            width:50%
+        }
+    }
+
+    @keyframes blinker {
+        50% {
+            opacity: 0;
+        }
+    }
+    .range-md.range-disabled .range-bar-active {
+        background-color: #c10536 !important;
+    }
+    .range-md.range-disabled .range-knob {
+        display: none !important;
+    }
+    .range-md .range-bar {
+        height:8px !important;
+    }
+    .myInput .input-cover {
+        border: 1px solid gray;
+        border-radius: 7px;
+    }
+    .button-md{
+        background-color: #c10536 !important;
+    }
+    ion-input.error-input {
+        border:1px solid red;
+        border-radius: 7px;
+    }
+    .social_share {
+        bottom:65px;
+    }
+    .social_share button {
+        background-color: #c10536 !important;
+    }
+}

@@ -1,0 +1,227 @@
+<ion-header>
+    <ion-navbar>
+        <ion-title class="site_color">
+            Contest Details
+        </ion-title>
+    </ion-navbar>
+</ion-header>
+<ion-content padding id="contestDetails">
+    <ion-card *ngIf="contestDetails.top_message!='' && contestDetails.length!=0">
+        <ion-card-header>
+            <strong>Announcement</strong>
+        </ion-card-header>
+        <ion-card-content>
+            {{contestDetails.top_message}}
+        </ion-card-content>
+    </ion-card>
+    <ion-row no-padding *ngIf="contestDetails.length!=0">
+        <ion-card *ngIf="contestType=='nonfree'">
+            <img src="{{contestDetails.product_image}}" class="detailsimage" />
+            <ion-card-content>
+                <ion-card-title text-center>
+                    {{contestDetails.product_name}}
+                </ion-card-title>
+            </ion-card-content>
+            <ion-row no-padding>
+                <ion-col text-center>
+                    <span style="font-size:20px;color:red">{{contestDetails.usermessage}}</span>
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding>
+                <ion-col text-center>
+                    <p text-wrap *ngIf="contestDetails.contest_close_timestamp!=''">
+                        <span id="contest_timer_{{contestDetails.contest_id}}" class="timer"></span></p>
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding *ngIf="contestDetails.info=='timer'">
+                <ion-col text-center>
+                    <span class="blink_me">Hurry Up ! Closing Soon</span>
+                </ion-col>
+            </ion-row>
+            <!--<ion-col text-center>
+                     <span style="font-size:20px;color:red">Contest Closed</span>
+                </ion-col>
+            </ion-row> -->
+
+            <ion-row class="info">
+                <ion-col text-left>
+                    <strong>Price</strong> : Rs. {{contestDetails.product_price}}
+                </ion-col>
+                <ion-col text-left>
+                    <strong>Entry Price</strong> : Rs. {{contestDetails.contest_entry_price}}
+                </ion-col>
+            </ion-row>
+            <ion-row class="info">
+                <ion-col text-left>
+                    <strong>Spots Left</strong> : {{contestDetails.left_count}}
+                </ion-col>
+                <ion-col text-left>
+                    <strong>Confirmed size</strong> : {{contestDetails.contest_confirm_size}}
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding>
+                <ion-col text-center>
+                    <!-- <ion-range min="0" disabled max="10" color="secondary">
+                </ion-range> -->
+                    <ion-range min="0" dualKnobs="true" disabled max="{{contestDetails.contest_size}}"
+                        [(ngModel)]="contestDetails.range" color="secondary">
+                    </ion-range>
+                </ion-col>
+            </ion-row>
+            <!-- <ion-row no-padding style="padding-bottom:10px;padding-left:15px" *ngIf="contestDetails.info=='timer'">
+                <ion-col text-left>
+                    <strong>Closed on</strong>: <span
+                        style="font-size:20px;color:red">{{contestDetails.contest_end_time_format}}</span>
+                </ion-col>
+            </ion-row> -->
+            <ion-row no-padding style="padding:5px;">
+                <ion-col text-left>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+
+        <ion-card *ngIf="contestType=='free'">
+            <img src="{{contestDetails.product_image}}" class="detailsimage" />
+            <ion-card-content>
+                <ion-card-title text-center>
+                    {{contestDetails.product_name}}
+                </ion-card-title>
+            </ion-card-content>
+            <ion-row no-padding>
+                <ion-col text-center>
+                    <span style="font-size:20px;color:red">{{contestDetails.usermessage}}</span>
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding>
+                <ion-col text-center>
+                    <p text-wrap *ngIf="contestDetails.contest_close_timestamp!=''">
+                        <span id="contest_timer_{{contestDetails.free_contest_id}}" class="timer"></span></p>
+                </ion-col>
+            </ion-row>
+            <ion-row no-padding *ngIf="contestDetails.info=='timer'">
+                <ion-col text-center>
+                    <span class="blink_me">Hurry Up ! Closing Soon</span>
+                </ion-col>
+            </ion-row>
+            <ion-row padding-horizontal>
+                <ion-col text-left>
+                    <strong>Entry Price</strong> : <strong>FREE</strong>
+                </ion-col>
+                <ion-col text-left>
+                    <strong>User Joined</strong> : {{contestDetails.joined_count}}
+                </ion-col>
+            </ion-row>
+           
+            <ion-row no-padding style="padding:5px;">
+                <ion-col text-left>
+                </ion-col>
+            </ion-row>
+        </ion-card>
+
+        <ion-card *ngIf="contestDetails.info!='closed' && contestDetails.contestPriceType == 'type1'">
+            <ion-card-header>
+                <strong>Join Contest</strong>
+            </ion-card-header>
+            <ion-card-content>
+                <form novalidate name="frmcontest" [formGroup]="user">
+                    <ion-row no-padding *ngIf="contestDetails.contest_message!=''">
+                        <ion-col text-left col-12>
+                            <p>{{contestDetails.contest_message}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding>
+                        <ion-col text-left col-6 class="myInput">
+
+                            <ion-input type="number" placeholder="Rupees" value="" [(ngModel)]="userAmount1"
+                                formControlName="userAmount1" onpaste="return false;" (keyup)="keyUpChecker1($event)"
+                                [ngClass]="{'error-input':submitted && user.controls.userAmount1.status=='INVALID'}">
+                            </ion-input>
+                        </ion-col>
+                        <ion-col text-left col-1 style="font-size:33px;">
+                            .
+                        </ion-col>
+                        <ion-col text-left col-5 class="myInput">
+                            <ion-input type="number" placeholder="Paise" max="99" maxlength="2" value=""
+                                [(ngModel)]="userAmount2" formControlName="userAmount2" onpaste="return false;"
+                                (keyup)="keyUpChecker2($event)"
+                                [ngClass]="{'error-input':submitted && user.controls.userAmount2.status=='INVALID'}">
+                            </ion-input>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding *ngIf="contestDetails.contest_agreement!=''">
+                        <ion-col text-left col-12>
+                            <p>{{contestDetails.contest_agreement}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding>
+                        <ion-col text-left col-12>
+                            <ion-buttons right>
+                                <button ion-button (click)="sendDetails()">
+                                    Join Contest
+                                </button>
+                            </ion-buttons>
+                        </ion-col>
+                    </ion-row>
+                </form>
+            </ion-card-content>
+        </ion-card>
+        <!-- </ion-row> -->
+
+        <ion-card *ngIf="contestDetails.info!='closed' && contestDetails.contestPriceType == 'type2'">
+            <ion-card-header>
+                <strong>Join Contest</strong>
+            </ion-card-header>
+            <ion-card-content>
+                <form novalidate name="frmcontest1" [formGroup]="userAmount">
+                    <ion-row no-padding *ngIf="contestDetails.contest_message!=''">
+                        <ion-col text-left col-12>
+                            <p>{{contestDetails.contest_message}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding>
+                        <ion-col text-left col-12 class="myInput">
+                            <ion-input type="number" placeholder="Rupees" value="" [(ngModel)]="userAmount21"
+                                formControlName="userAmount21" onpaste="return false;" (keyup)="keyUpChecker21($event)"
+                                [ngClass]="{'error-input':submittedNew && userAmount.controls.userAmount21.status=='INVALID'}">
+                            </ion-input>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding *ngIf="contestDetails.contest_agreement!=''">
+                        <ion-col text-left col-12>
+                            <p>{{contestDetails.contest_agreement}}</p>
+                        </ion-col>
+                    </ion-row>
+                    <ion-row no-padding>
+                        <ion-col text-left col-12>
+                            <ion-buttons right>
+                                <button ion-button (click)="sendAmountDetails()">
+                                    Join Contest
+                                </button>
+                            </ion-buttons>
+                        </ion-col>
+                    </ion-row>
+                </form>
+            </ion-card-content>
+        </ion-card>
+    </ion-row>
+
+    <ion-card style="margin-bottom: 65px; " *ngIf="contestDetails.length!=0">
+        <ion-card-header>
+            <strong>Product Specification </strong>
+        </ion-card-header>
+        <ion-card-content [innerHTML]="contestDesc">
+            <!-- {{contestDetails.product_desc}} -->
+        </ion-card-content>
+    </ion-card>
+    <!-- <ion-fab right bottom class="social_share">
+        <button ion-fab color="secondary" (click)="socialSharingLink(contestDetails.share_url)">
+            <ion-icon name="share-alt"></ion-icon>
+        </button>
+    </ion-fab> -->
+</ion-content>
+<ion-footer *ngIf="contestDetails.length!=0">
+    <button ion-button full color="secondary" style="background-color:#c10536;height: 4.5rem;"
+        (click)="goToUserDetails()">
+        View Joined User
+    </button>
+</ion-footer>
